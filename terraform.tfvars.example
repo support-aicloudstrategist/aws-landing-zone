@@ -1,0 +1,49 @@
+# =============================================================================
+# AWS Landing Zone - Configuration
+# =============================================================================
+# Copy this file to terraform.tfvars and update with your values
+# =============================================================================
+
+# Organization name (used as prefix for all resources)
+org_name = "mycompany"
+
+# Primary AWS region
+aws_region = "us-east-1"
+
+# Email domain for auto-generating account emails
+email_domain = "yourdomain.com"
+email_prefix = "admin+aws"
+
+# This will create accounts with emails like:
+# admin+aws-security@yourdomain.com
+# admin+aws-log-archive@yourdomain.com
+# admin+aws-dev@yourdomain.com
+# etc.
+
+# Or override individual account emails:
+# security_account_email        = "aws-security@yourdomain.com"
+# log_archive_account_email     = "aws-logs@yourdomain.com"
+# shared_services_account_email = "aws-shared@yourdomain.com"
+# dev_account_email             = "aws-dev@yourdomain.com"
+# staging_account_email         = "aws-staging@yourdomain.com"
+# prod_account_email            = "aws-prod@yourdomain.com"
+
+# Regions allowed for workloads (enforced by SCP)
+allowed_regions = ["us-east-1", "us-west-2"]
+
+# Logging
+cloudtrail_retention_days = 365
+
+# Security services (set to false to avoid costs after free trial)
+enable_guardduty    = true   # FREE for 30 days, then ~$4/account/month
+enable_config_rules = true   # ~$0.001 per rule evaluation
+
+# Budget alerts
+budget_limit_usd   = "50"
+budget_alert_emails = ["your-email@yourdomain.com"]
+
+# Common tags
+tags = {
+  Owner       = "platform-team"
+  CostCenter  = "infrastructure"
+}
