@@ -74,6 +74,13 @@ terraform plan -out=plan.tfplan
 terraform apply plan.tfplan
 ```
 
+## Enabling Security Services
+
+Security services (GuardDuty, SecurityHub, Config Recorder, Config Rules) are disabled
+by default to minimize costs for PoC environments. See the full
+**[Enable Services Guide](ENABLE_SERVICES_GUIDE.md)** for step-by-step instructions
+to enable them when you're ready for production.
+
 ## Replicating to Another AWS Root Account
 
 See the full **[Replication Guide](REPLICATION_GUIDE.md)** for detailed step-by-step
