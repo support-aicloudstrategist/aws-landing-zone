@@ -8,6 +8,12 @@ variable "retention_days" {
   default     = 365
 }
 
+variable "enable_config_recorder" {
+  description = "Enable AWS Config recorder (~$2/month)"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   type    = map(string)
   default = {}

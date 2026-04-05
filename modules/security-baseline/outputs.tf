@@ -1,5 +1,5 @@
 output "security_hub_arn" {
-  value = aws_securityhub_account.main.arn
+  value = var.enable_security_hub ? aws_securityhub_account.main[0].arn : ""
 }
 
 output "access_analyzer_arn" {

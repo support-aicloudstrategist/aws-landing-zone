@@ -73,6 +73,18 @@ variable "enable_config_rules" {
   default     = true
 }
 
+variable "enable_security_hub" {
+  description = "Enable Security Hub (~$5/month after 30-day trial)"
+  type        = bool
+  default     = true
+}
+
+variable "enable_config_recorder" {
+  description = "Enable AWS Config recorder (~$2/month)"
+  type        = bool
+  default     = true
+}
+
 variable "cloudtrail_retention_days" {
   description = "Number of days to retain CloudTrail logs in S3"
   type        = number

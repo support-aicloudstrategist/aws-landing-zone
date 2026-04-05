@@ -23,5 +23,5 @@ output "access_logs_bucket_name" {
 }
 
 output "config_recorder_id" {
-  value = aws_config_configuration_recorder.main.id
+  value = var.enable_config_recorder ? aws_config_configuration_recorder.main[0].id : ""
 }

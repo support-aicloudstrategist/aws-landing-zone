@@ -262,8 +262,9 @@ resource "aws_s3_bucket_policy" "config_logs" {
 # AWS Config Recorder (management account)
 # -----------------------------------------------------------------------------
 resource "aws_config_configuration_recorder" "main" {
+  count    = var.enable_config_recorder ? 1 : 0
   name     = "${var.org_name}-config-recorder"
-  role_arn = aws_iam_role.config_role.arn
+  role_arn = aws_iam_role.config_role[0].arn
 
   recording_group {
     all_supported                 = true
@@ -272,6 +273,7 @@ resource "aws_config_configuration_recorder" "main" {
 }
 
 resource "aws_config_delivery_channel" "main" {
+  count          = var.enable_config_recorder ? 1 : 0
   name           = "${var.org_name}-config-delivery"
   s3_bucket_name = aws_s3_bucket.config_logs.id
 
@@ -283,7 +285,8 @@ resource "aws_config_delivery_channel" "main" {
 }
 
 resource "aws_config_configuration_recorder_status" "main" {
-  name       = aws_config_configuration_recorder.main.name
+  count      = var.enable_config_recorder ? 1 : 0
+  name       = aws_config_configuration_recorder.main[0].name
   is_enabled = true
 
   depends_on = [aws_config_delivery_channel.main]
@@ -291,7 +294,8 @@ resource "aws_config_configuration_recorder_status" "main" {
 
 # IAM Role for Config
 resource "aws_iam_role" "config_role" {
-  name = "${var.org_name}-ConfigServiceRole"
+  count = var.enable_config_recorder ? 1 : 0
+  name  = "${var.org_name}-ConfigServiceRole"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -310,13 +314,15 @@ resource "aws_iam_role" "config_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "config_role" {
-  role       = aws_iam_role.config_role.name
+  count      = var.enable_config_recorder ? 1 : 0
+  role       = aws_iam_role.config_role[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
 }
 
 resource "aws_iam_role_policy" "config_s3_delivery" {
-  name = "ConfigS3Delivery"
-  role = aws_iam_role.config_role.id
+  count = var.enable_config_recorder ? 1 : 0
+  name  = "ConfigS3Delivery"
+  role  = aws_iam_role.config_role[0].id
 
   policy = jsonencode({
     Version = "2012-10-17"

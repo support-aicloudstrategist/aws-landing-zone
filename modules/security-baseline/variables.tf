@@ -14,6 +14,12 @@ variable "enable_delegated_admin" {
   default     = true
 }
 
+variable "enable_security_hub" {
+  description = "Enable Security Hub (has cost after 30-day trial)"
+  type        = bool
+  default     = true
+}
+
 variable "notification_emails" {
   description = "Email addresses for security finding notifications"
   type        = list(string)

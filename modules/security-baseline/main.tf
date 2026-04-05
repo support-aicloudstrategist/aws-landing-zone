@@ -12,10 +12,12 @@ data "aws_region" "current" {}
 # -----------------------------------------------------------------------------
 # AWS Security Hub (organization-wide)
 # -----------------------------------------------------------------------------
-resource "aws_securityhub_account" "main" {}
+resource "aws_securityhub_account" "main" {
+  count = var.enable_security_hub ? 1 : 0
+}
 
 resource "aws_securityhub_organization_admin_account" "security" {
-  count            = var.enable_delegated_admin ? 1 : 0
+  count            = var.enable_security_hub && var.enable_delegated_admin ? 1 : 0
   admin_account_id = var.security_account_id
 
   depends_on = [aws_securityhub_account.main]
@@ -28,6 +30,7 @@ resource "aws_securityhub_organization_admin_account" "security" {
 
 # Enable AWS Foundational Security Best Practices standard
 resource "aws_securityhub_standards_subscription" "aws_foundational" {
+  count         = var.enable_security_hub ? 1 : 0
   standards_arn = "arn:aws:securityhub:${data.aws_region.current.name}::standards/aws-foundational-security-best-practices/v/1.0.0"
 
   depends_on = [aws_securityhub_account.main]
@@ -35,6 +38,7 @@ resource "aws_securityhub_standards_subscription" "aws_foundational" {
 
 # Enable CIS AWS Foundations Benchmark
 resource "aws_securityhub_standards_subscription" "cis" {
+  count         = var.enable_security_hub ? 1 : 0
   standards_arn = "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0"
 
   depends_on = [aws_securityhub_account.main]

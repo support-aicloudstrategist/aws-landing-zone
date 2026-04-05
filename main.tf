@@ -65,9 +65,10 @@ module "iam_baseline" {
 module "logging" {
   source = "./modules/logging"
 
-  org_name       = var.org_name
-  retention_days = var.cloudtrail_retention_days
-  tags           = local.common_tags
+  org_name               = var.org_name
+  retention_days         = var.cloudtrail_retention_days
+  enable_config_recorder = var.enable_config_recorder
+  tags                   = local.common_tags
 
   depends_on = [module.organization]
 }
@@ -81,7 +82,8 @@ module "security_baseline" {
 
   org_name               = var.org_name
   security_account_id    = module.organization.security_account_id
-  enable_delegated_admin = true
+  enable_delegated_admin = var.enable_security_hub
+  enable_security_hub    = var.enable_security_hub
   notification_emails    = var.budget_alert_emails
   tags                   = local.common_tags
 
